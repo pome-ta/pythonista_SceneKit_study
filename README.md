@@ -1,1 +1,3 @@
 # pythonista_SceneKit_study
+
+Pythonista でSceneKit 色々やってみるリポジトリ
