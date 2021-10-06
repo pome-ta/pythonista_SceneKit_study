@@ -1,6 +1,6 @@
 from objc_util import load_framework, ObjCClass, ObjCInstance, on_main_thread
 import ui
-import pdbg
+#import pdbg
 
 load_framework('SceneKit')
 

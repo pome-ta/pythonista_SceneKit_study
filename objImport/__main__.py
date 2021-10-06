@@ -7,6 +7,7 @@ load_framework('SceneKit')
 
 UIColor = ObjCClass('UIColor')
 
+#https://stackoverflow.com/questions/35511851/objective-c-scenekit-import-obj-file-externally-and-color-it
 
 
 class SceneView:
@@ -36,14 +37,30 @@ class SceneView:
     ShowConstraints = (1 << 9)
     ShowCameras = (1 << 10)
     '''
-    scnView.debugOptions = (1 << 1) | (1 << 3) | (1 << 5) | (1 << 6) | (1 << 7) | (1 << 10)
+    #scnView.debugOptions = (1 << 1) | (1 << 3) | (1 << 5) | (1 << 6) | (1 << 7) | (1 << 10)
 
     SCNScene = ObjCClass('SCNScene')
-    #objUrl = nsurl('./Resources/Farmhouse.obj')
+    
     objUrl = nsurl('./Resources/mushroom.obj')
-    scene = SCNScene.sceneWithURL_options_(objUrl, None)
+    scene = SCNScene.scene()
+
+    asset = ObjCClass('MDLAsset').new()
+    asset.initWithURL_(objUrl)
 
     SCNNode = ObjCClass('SCNNode')
+
+    node = SCNNode.nodeWithMDLObject_(asset.objectAtIndexedSubscript_(0))
+
+    pngUrl = ObjCClass('NSData').dataWithContentsOfURL_(
+      nsurl('./Resources/mushroom.png'))
+    tex_png = ObjCClass('UIImage').alloc().initWithData_(pngUrl)
+
+    material = ObjCClass('SCNMaterial').material()
+    material.diffuse().setContents_(tex_png)
+    node.geometry().setFirstMaterial_(material)
+    scene.rootNode().addChildNode_(node)
+
+
     cameraNode = SCNNode.node()
     cameraNode.camera = ObjCClass('SCNCamera').camera()
     cameraNode.position = (0.0, 0.0, 15.0)
